@@ -2,6 +2,7 @@ import osUtils from 'os-utils'
 import fs from 'fs'
 import os from 'os'
 import { BrowserWindow } from 'electron'
+import { ipcWebContentsSend } from './utils.js'
 
 const POLLING_INTERVAL = 500
 
@@ -12,12 +13,14 @@ export const pollResource = (mainWindow: BrowserWindow) => {
     const ramUsage = getRamUsage()
     const storageUsage = getStorageUsage()
 
-    mainWindow.webContents.send('statistics', { cpuUsage, ramUsage, storageUsage: storageUsage.usage })
+    // mainWindow.webContents.send('statistics', { cpuUsage, ramUsage, storageUsage: storageUsage.usage })
+    // 广义 ipc webcontents send map 映射方案
+    ipcWebContentsSend('statistics', mainWindow.webContents, { cpuUsage, ramUsage, storageUsage: storageUsage.usage })
   }, POLLING_INTERVAL)
 }
 
 // cpu 利用率 - 所有内核的总处理器利用率
-const getCpuUsage = () => { 
+const getCpuUsage = (): Promise<number> => { 
   return new Promise(resovle => { 
     osUtils.cpuUsage(resovle)
   })

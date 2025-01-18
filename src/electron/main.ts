@@ -1,8 +1,7 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
-import path from 'path'
-import { isDev } from './utils.js'
+import { app, BrowserWindow } from 'electron'
+import { ipcMainHandle, isDev } from './utils.js'
 import { getStaticData, pollResource } from './resourceManager.js'
-import { getPreloadPath } from './pathResolver.js'
+import { getPreloadPath, getUIPath } from './pathResolver.js'
 
 app.on('ready', () =>
 {
@@ -16,13 +15,16 @@ app.on('ready', () =>
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5123')
   } else { 
-    mainWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'))
+    mainWindow.loadFile(getUIPath())
   }
 
   // ui 资源渲染后进行函数轮询
   pollResource(mainWindow)
   // on 采用 UDP 协议, 不期待响应
-  ipcMain.handle('getStaticData', () => { 
-    return getStaticData()
-  })
+  // ipcMain.handle('getStaticData', () => { 
+    // return getStaticData()
+  // })
+  
+  // 广义 ipc handle 挂载映射方案, 类型完全安全
+  ipcMainHandle('getStaticData', getStaticData)
 })
