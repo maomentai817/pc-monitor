@@ -1,17 +1,18 @@
 import osUtils from 'os-utils'
 import fs from 'fs'
 import os from 'os'
+import { BrowserWindow } from 'electron'
 
 const POLLING_INTERVAL = 500
 
 // 函数轮询, 500ms 更新资源
-export const pollResource = () => { 
+export const pollResource = (mainWindow: BrowserWindow) => { 
   setInterval(async () => {
     const cpuUsage = await getCpuUsage()
     const ramUsage = getRamUsage()
     const storageUsage = getStorageUsage()
 
-    console.log({cpuUsage, ramUsage, storageUsage: storageUsage.usage})
+    mainWindow.webContents.send('statistics', { cpuUsage, ramUsage, storageUsage: storageUsage.usage })
   }, POLLING_INTERVAL)
 }
 
