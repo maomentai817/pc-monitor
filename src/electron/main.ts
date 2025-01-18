@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import { isDev } from './utils.js'
+import { pollResource } from './resourceManager.js'
 
 app.on('ready', () =>
 {
@@ -12,4 +13,7 @@ app.on('ready', () =>
   } else { 
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'))
   }
+
+  // ui 资源渲染后进行函数轮询
+  pollResource()
 })
