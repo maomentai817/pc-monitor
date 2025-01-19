@@ -4,28 +4,50 @@ header {
   padding: 0.5rem;
   box-sizing: border-box;
   background-color: #181818;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   -webkit-app-region: drag;
-}
 
-header button {
-  all: unset;
-  border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
-  margin: 0.25rem;
-  -webkit-app-region: no-drag;
-}
+  &:hover {
+    #close,
+    #minimize,
+    #maximize {
+      svg {
+        opacity: 1;
+      }
+    }
+  }
 
-#close {
-  background-color: red;
-}
-
-#minimize {
-  background-color: yellow;
-}
-
-#maximize {
-  background-color: lime;
+  .operate-btn {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    cursor: pointer;
+    z-index: 9999;
+    -webkit-app-region: no-drag;
+  }
+  #close,
+  #minimize,
+  #maximize {
+    svg {
+      opacity: 0;
+      transition: all 0.3s;
+    }
+  }
+  #close {
+    background-color: #ff5f57;
+  }
+  #minimize {
+    background-color: #ffbd2e;
+  }
+  #maximize {
+    background-color: #28c840;
+  }
 }
 
 .main {
