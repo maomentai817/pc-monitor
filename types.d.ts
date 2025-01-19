@@ -11,7 +11,7 @@ type StaticData = {
   totalMemoryGB: number;
 }
 
-type FrameWindowAction = 'CLOSE' | 'MINIMIZE' | 'MAXIMIZE'
+type FrameWindowAction = 'CLOSE' | 'MINIMIZE' | 'MAXIMIZE' | 'UNMAXIMIZE'
 
 type View = 'CPU' | 'RAM' | 'STORAGE';
 

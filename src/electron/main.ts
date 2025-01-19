@@ -11,6 +11,15 @@ if (process.platform !== 'darwin')  hideMenu()
 app.on('ready', () =>
 {
   const mainWindow = new BrowserWindow({
+    width: 900,
+    height: 670,
+    minWidth: 900,
+    minHeight: 670,
+    show: true,
+    autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
+    center: true,
+    title: 'System Monitor',
     webPreferences: {
       preload: getPreloadPath(),
     },
@@ -44,6 +53,9 @@ app.on('ready', () =>
         break
       case 'MINIMIZE':
         mainWindow.minimize()
+        break
+      case 'UNMAXIMIZE':
+        mainWindow.unmaximize()
         break
     }
   })
