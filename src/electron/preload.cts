@@ -10,6 +10,7 @@ electron.contextBridge.exposeInMainWorld('electron', {
   
   // ipc 映射方案
   subscribeStatistics: (callback) => ipcOn('statistics', (stats) => callback(stats)),
+  subscribeChangeView: (callback) => ipcOn('changeView', (view) => callback(view)),
   getStaticData: () => ipcInvoke('getStaticData'),
 } satisfies Window['electron'])
 
