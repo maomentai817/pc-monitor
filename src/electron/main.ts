@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import { ipcMainHandle, isDev } from './utils.js'
+import { ipcMainHandle, ipcMainOn, isDev } from './utils.js'
 import { getStaticData, pollResource } from './resourceManager.js'
 import { getPreloadPath, getUIPath } from './pathResolver.js'
 import { createTray } from './tray.js'
@@ -14,6 +14,7 @@ app.on('ready', () =>
     webPreferences: {
       preload: getPreloadPath(),
     },
+    frame: false,
   })
 
   // 开发模式
@@ -32,6 +33,20 @@ app.on('ready', () =>
   
   // 广义 ipc handle 挂载映射方案, 类型完全安全
   ipcMainHandle('getStaticData', getStaticData)
+  // 挂载自定义窗口事件
+  ipcMainOn('sendFrameAction', (payload) => {
+    switch (payload) {
+      case 'CLOSE':
+        mainWindow.close()
+        break
+      case 'MAXIMIZE':
+        mainWindow.maximize()
+        break
+      case 'MINIMIZE':
+        mainWindow.minimize()
+        break
+    }
+  })
 
   // 挂载托盘图标
   createTray(mainWindow)

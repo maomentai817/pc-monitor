@@ -12,6 +12,7 @@ electron.contextBridge.exposeInMainWorld('electron', {
   subscribeStatistics: (callback) => ipcOn('statistics', (stats) => callback(stats)),
   subscribeChangeView: (callback) => ipcOn('changeView', (view) => callback(view)),
   getStaticData: () => ipcInvoke('getStaticData'),
+  sendFrameAction: (payload) => ipcSend('sendFrameAction', payload)
 } satisfies Window['electron'])
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(key: Key): Promise<EventPayloadMapping[Key]> { 
@@ -23,4 +24,8 @@ function ipcOn<Key extends keyof EventPayloadMapping>(key: Key, callback: (paylo
   electron.ipcRenderer.on(key, cb)
   // 取消订阅该消息
   return () => electron.ipcRenderer.off(key, cb)
+}
+
+function ipcSend<Key extends keyof EventPayloadMapping>(key: Key, payload: EventPayloadMapping[Key]) { 
+  electron.ipcRenderer.send(key, payload)
 }
