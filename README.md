@@ -1,50 +1,36 @@
-# React + TypeScript + Vite
+## System Monitoring Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 一个基于 Electron, React 和 TypeScript 的系统监控应用程序
 
-Currently, two official plugins are available:
+> 它解决了设置一个显示 CPU、RAM 和文件系统系统资源使用情况的电子应用程序的问题
+> - 具有类型安全的 IPC 通信, 高度封装集成, 简单的 IPC 通信挂载 Mapping 策略
+> - 具有隐藏到托盘功能
+> - 带有自定义菜单栏
+> - 带有定制窗框 (仿 MacOS 交通灯)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> 它使用 E2E-`Playwright`和单元测试`Vitest`进行测试
 
-## Expanding the ESLint configuration
+## 项目启动
+1. 安装依赖
+```bash
+pnpm i
+```
+2. 启动项目
+```bash
+pnpm dev
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+// 该命令将运行脚本 dev:react 和 dev:electron, 即启动渲染层后, 编译ts代码并启动electron进程, 支持热重载
+```
+3. 构建项目
+```bash
+pnpm dist:win
+pnpm dist:mac
+pnpm dist:linux
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+// 项目打包完后会在 dist 文件夹下生成对应的平台包, 提供启动可执行文件和安装包
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 项目展示
+![](./imgs/1.png)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![](./imgs/2.png)
