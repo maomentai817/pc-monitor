@@ -18,5 +18,8 @@ function ipcInvoke<Key extends keyof EventPayloadMapping>(key: Key): Promise<Eve
 }
 
 function ipcOn<Key extends keyof EventPayloadMapping>(key: Key, callback: (payload: EventPayloadMapping[Key]) => void) { 
-  electron.ipcRenderer.on(key, (_, payload) => callback(payload))
+  const cb = (_: Electron.IpcRendererEvent, payload: any) => callback(payload)
+  electron.ipcRenderer.on(key, cb)
+  // 取消订阅该消息
+  return () => electron.ipcRenderer.off(key, cb)
 }

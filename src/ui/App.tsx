@@ -6,8 +6,11 @@ function App() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    window.electron.subscribeStatistics(stats => console.log(stats))
-  })
+    // ipcOn 返回了一个取消挂载的方法
+    const unsub = window.electron.subscribeStatistics(stats => console.log(stats))
+
+    return unsub
+  }, [])
 
   return (
     <>
